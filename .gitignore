@@ -1,0 +1,58 @@
+# --- BorderWatch generated data (regenerable via the generator notebook) ---
+# These large CSV layers are produced by BorderWatch_DataGenerator_v10_3.ipynb.
+# The repo ships the compact parquet versions (via Git LFS) instead.
+manufacturers.csv
+sms.csv
+email.csv
+chat.csv
+waze.csv
+burner_to_owner_ground_truth.csv
+
+# Other regenerable analyzer outputs
+burner_legit_matches.csv
+burner_per_cell.png
+cartel_hierarchy_graph.png
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# --- Tooling / caches ---
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints
+.cache/
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Misc local scratch ---
+*.log
+*.tmp
+scratch/
+tmp/
