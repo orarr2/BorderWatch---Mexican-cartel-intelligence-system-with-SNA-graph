@@ -1,4 +1,4 @@
-# BorderWatch v10.3 — Data Logic & Behavior
+# BorderWatch v10.3 - Data Logic & Behavior
 
 > Comprehensive technical reference for how the BorderWatch data simulation works:
 > distributions, layer relationships, anomaly injection, and pipeline flow.
@@ -7,7 +7,7 @@
 
 ## The 5 Communication Layers
 
-### L1 — GSM (Voice Calls) | `manufacturers.csv`
+### L1 - GSM (Voice Calls) | `manufacturers.csv`
 
 - **Volume**: ~500K rows
 - **Real-world analog**: Cell tower voice call records (CDR)
@@ -15,14 +15,14 @@
 
 **Behavior**:
 - ~95% legitimate business calls (lognormal duration, ~336s median)
-- ~5% cartel burner calls — **bimodal** distribution:
+- ~5% cartel burner calls - **bimodal** distribution:
   - 70% short coded coordination (30-120 sec)
   - 30% long planning sessions (1800-4000 sec)
   - Resulting median: ~107s, IQR [68s, 1841s]
 - Hour distribution: `LEGIT_HOUR_P` for legit, `SMUG_HOUR_P` for cartel (75% night-skewed)
 - Cell-tower IDs cluster by city zone (border / transit / deep)
 
-### L2 — SMS (Text Messages) | `sms.csv`
+### L2 - SMS (Text Messages) | `sms.csv`
 
 - **Volume**: ~85K rows
 - **Real-world analog**: SMS messaging logs from telecom providers
@@ -33,7 +33,7 @@
 - `sms_body_class` is a discrete category (greeting / coordination / status / question)
 - Time-locality with L1 enables `follow_up_pairs` detection
 
-### L3 — Email | `email.csv`
+### L3 - Email | `email.csv`
 
 - **Volume**: ~50K rows
 - **Real-world analog**: Email server logs (sender domain, recipient, timing)
@@ -44,7 +44,7 @@
 - `sender_sim_id` matches L1 `caller_sim_id` → SIM-based cross-layer attribution
 - ~10% chain-leaker scenario: legit-looking sender connects to cartel-aligned receivers
 
-### L4 — Chat (Encrypted Messaging) | `chat.csv`
+### L4 - Chat (Encrypted Messaging) | `chat.csv`
 
 - **Volume**: ~70K rows
 - **Real-world analog**: Encrypted-app metadata (Signal/Telegram/Wickr endpoints)
@@ -53,9 +53,9 @@
 **Behavior**:
 - Handler-associate pairs are a 2-level structure: each handler manages ~5-15 associates
 - `handler_age_band` enables young-suspect detection (under-30 cluster)
-- Encryption is metadata-only — content is not modeled
+- Encryption is metadata-only - content is not modeled
 
-### L5 — Waze GPS | `waze.csv`
+### L5 - Waze GPS | `waze.csv`
 
 - **Volume**: ~30K rows
 - **Real-world analog**: Mobile phone GPS pings + drone activation logs
@@ -73,14 +73,14 @@
 
 The generator hardcodes the following hierarchy and saves it to `burner_to_owner_ground_truth.csv`:
 
-- **12 cartel cells** — one per major US-MX border crossing:
+- **12 cartel cells** - one per major US-MX border crossing:
   TIJ, JUA, NOG, NLD, REY, MAT, MEX, PIE, AGU, SON, PAL, CUL
-- **5 commanders** — fixed names, each running 2-3 cells:
-  - Eleanor Whitfield Drake (TIJ, MAT, PAL — 3 cells, 510 pairs)
-  - Cassandra Merriweather Sloan (JUA, MEX, CUL — 3 cells, 474 pairs)
-  - Damian Hollister Vane (NLD, AGU — 2 cells, 330 pairs)
-  - Magnus Dunbar Ellison (NOG, PIE — 2 cells, 324 pairs)
-  - Roderick Talbot Ainsley (REY, SON — 2 cells, 288 pairs)
+- **5 commanders** - fixed names, each running 2-3 cells:
+  - Eleanor Whitfield Drake (TIJ, MAT, PAL - 3 cells, 510 pairs)
+  - Cassandra Merriweather Sloan (JUA, MEX, CUL - 3 cells, 474 pairs)
+  - Damian Hollister Vane (NLD, AGU - 2 cells, 330 pairs)
+  - Magnus Dunbar Ellison (NOG, PIE - 2 cells, 324 pairs)
+  - Roderick Talbot Ainsley (REY, SON - 2 cells, 288 pairs)
 - **~15 lieutenants** (3 per commander, names regenerate each run)
 - **~960 burner pairs** total (~80 per cell)
 - **~1,118 anonymous burner phones** with no name in ground truth
@@ -103,7 +103,7 @@ Each cartel cell has ~80 burner pairs. For each pair:
    - 35% bidirectional (some A→B + some B→A)
 7. **Add ~20% chance of a 2nd contact** for each phone, with Rule 4 cap (max 2 contacts per burner)
 
-Burner pair sizes range 8-22 events (uniform distribution — Sacred Chart #3 invariant).
+Burner pair sizes range 8-22 events (uniform distribution - Sacred Chart #3 invariant).
 
 ---
 
@@ -122,12 +122,12 @@ The non-cartel population is generated to provide cover-traffic:
 
 ## Bridge Events (Sacred #3)
 
-A **bridge event** is a phone with 8-22 unique partners — distinguishing it from:
+A **bridge event** is a phone with 8-22 unique partners - distinguishing it from:
 - Burners (exactly 1 partner)
 - Legit individuals (typically 2-7 partners)
 - Power users (24+ partners)
 
-Bridges are typically operational intermediaries (couriers, lookouts, fixers) and form the medium-volume backbone of cartel ops. The distribution is **uniform across bins 8-22** by design — Sacred Chart #3 verifies this property has no spike at any specific value (e.g. bin=15).
+Bridges are typically operational intermediaries (couriers, lookouts, fixers) and form the medium-volume backbone of cartel ops. The distribution is **uniform across bins 8-22** by design - Sacred Chart #3 verifies this property has no spike at any specific value (e.g. bin=15).
 
 ---
 
@@ -158,11 +158,11 @@ Mid-period, 140 phones swap their SIM ID:
 
 The generator injects 5 deliberate anomalies to test analyzer detection:
 
-1. **1:1 burner pattern** — burner phones have exactly 1 partner (Sacred #1)
-2. **Chain leakers** — legit-named phones appear in multiple cartel layers (~5% of legits)
-3. **SIM-swap** — 140 phones change SIM mid-period
-4. **Pre-border blackout** — some cartel phones go silent in the hours before a confirmed border crossing
-5. **Night-shifted activity** — cartel phones cluster in 22:00-06:00 (75% vs. 12% baseline)
+1. **1:1 burner pattern** - burner phones have exactly 1 partner (Sacred #1)
+2. **Chain leakers** - legit-named phones appear in multiple cartel layers (~5% of legits)
+3. **SIM-swap** - 140 phones change SIM mid-period
+4. **Pre-border blackout** - some cartel phones go silent in the hours before a confirmed border crossing
+5. **Night-shifted activity** - cartel phones cluster in 22:00-06:00 (75% vs. 12% baseline)
 
 Each anomaly produces a measurable statistical signal that the analyzer's tests A/B/C and ML model can exploit.
 

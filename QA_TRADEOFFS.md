@@ -1,4 +1,4 @@
-# BorderWatch v10.3 — Design Trade-offs Q&A
+# BorderWatch v10.3 - Design Trade-offs Q&A
 
 > Reference for instructors and researchers presenting BorderWatch.
 > Each question covers a design decision, the trade-offs considered, and why this option was chosen.
@@ -13,7 +13,7 @@
 
 | Option | Pros | Cons |
 |---|---|---|
-| 3 commanders | Very strong signal, easy to detect | Unrealistic — would be a single command structure |
+| 3 commanders | Very strong signal, easy to detect | Unrealistic - would be a single command structure |
 | **5 (chosen)** | Realistic span-of-control, balanced detection | Some lieutenants must be invented |
 | 10+ commanders | More distributed, more realistic chaos | Detection becomes statistical only, ML models struggle |
 
@@ -55,7 +55,7 @@
 
 **The choice**: Each burner is allowed primary + at most one secondary contact.
 
-**Why**: Cartel tradecraft limits burner exposure. A burner used with 3+ contacts is much more likely to be detected/seized → operations security demands strict limits. The generator enforces this strictly; the analyzer occasionally finds 3-contact "violations" (~0.6%) due to slip pairs or follow-up overlap — these are detection cross-fire, not data quality issues.
+**Why**: Cartel tradecraft limits burner exposure. A burner used with 3+ contacts is much more likely to be detected/seized → operations security demands strict limits. The generator enforces this strictly; the analyzer occasionally finds 3-contact "violations" (~0.6%) due to slip pairs or follow-up overlap - these are detection cross-fire, not data quality issues.
 
 ---
 
@@ -63,20 +63,20 @@
 
 ### Q7: Why bimodal distribution for burner call duration (70% short + 30% long)?
 
-**The choice**: Mixture distribution — 70% calls in [30, 120] seconds + 30% calls in [1800, 4000] seconds.
+**The choice**: Mixture distribution - 70% calls in [30, 120] seconds + 30% calls in [1800, 4000] seconds.
 
 | Option | Pros | Cons |
 |---|---|---|
-| Pure short (uniform 30-120s) | Maximally clean signal | Unrealistic — coordination needs occasional long sessions |
+| Pure short (uniform 30-120s) | Maximally clean signal | Unrealistic - coordination needs occasional long sessions |
 | **70/30 mixture (chosen)** | Realistic, models two ops regimes | More variance, smaller effect size in tests |
 | Pure long (uniform 1800-4000s) | Unrealistic noise level | Reverses expected signal |
 | Lognormal (legit-like) | Maximally realistic | No detectable signal |
 
-**Why 70/30**: Counter-narcotics literature documents two operational regimes: brief coded coordination (the dominant mode) and rare extended planning. The 70/30 mixture yields a measurable but realistic signal — burner median ~107s vs legit median ~336s, with Mann-Whitney rank-biserial r ≈ -0.288 (small effect). The "small effect" is methodologically honest for observational data.
+**Why 70/30**: Counter-narcotics literature documents two operational regimes: brief coded coordination (the dominant mode) and rare extended planning. The 70/30 mixture yields a measurable but realistic signal - burner median ~107s vs legit median ~336s, with Mann-Whitney rank-biserial r ≈ -0.288 (small effect). The "small effect" is methodologically honest for observational data.
 
 ### Q8: Why does Test B show "SHORTER" direction?
 
-**The choice**: The direction (LONGER vs SHORTER) is computed dynamically from the data — `_direction` flips based on the sign of rank-biserial r.
+**The choice**: The direction (LONGER vs SHORTER) is computed dynamically from the data - `_direction` flips based on the sign of rank-biserial r.
 
 **Why**: Since burners have median ~107s and legits have median ~336s, burners are quantitatively shorter. The dynamic switch ensures the printed interpretation always matches the empirical data, regardless of generator parameter changes.
 
@@ -103,17 +103,17 @@ This is the operational truth: cartel coordination is **brief and coded**, exact
 ### Q10: Why only 8 features and not more?
 
 **The chosen 8**:
-- `hour`, `day_of_week`, `month` — temporal
-- `device_missing`, `sim_missing` — counter-surveillance signals
-- `call_zscore`, `caller_total_calls` — volume normalization
-- `is_night` — derived temporal flag
+- `hour`, `day_of_week`, `month` - temporal
+- `device_missing`, `sim_missing` - counter-surveillance signals
+- `call_zscore`, `caller_total_calls` - volume normalization
+- `is_night` - derived temporal flag
 
 **Excluded by design**:
-- `is_one_to_one` — direct label leakage (this IS the burner definition)
-- `caller_partners` — strongly correlated with `is_one_to_one`
-- `is_burner_phone` — the actual label
+- `is_one_to_one` - direct label leakage (this IS the burner definition)
+- `caller_partners` - strongly correlated with `is_one_to_one`
+- `is_burner_phone` - the actual label
 
-**Why**: With label-leaky features, AUC easily hits 0.99 — but the model has learned the label, not the underlying signal. The 8 chosen features yield AUC ~0.81, which is the **honest classifier performance** absent label leakage. This is "Variant C" hardening.
+**Why**: With label-leaky features, AUC easily hits 0.99 - but the model has learned the label, not the underlying signal. The 8 chosen features yield AUC ~0.81, which is the **honest classifier performance** absent label leakage. This is "Variant C" hardening.
 
 ### Q11: Why time-based 70/30 split and not random 80/20?
 
@@ -122,7 +122,7 @@ This is the operational truth: cartel coordination is **brief and coded**, exact
 **Trade-off**:
 | Option | Pros | Cons |
 |---|---|---|
-| Random 80/20 | Higher AUC, more samples for train | Temporal leakage — burner that's "born" mid-period can leak into both train and test |
+| Random 80/20 | Higher AUC, more samples for train | Temporal leakage - burner that's "born" mid-period can leak into both train and test |
 | **Time-based 70/30 (chosen)** | No temporal leakage, realistic operational scenario | Lower AUC, smaller train set |
 | Forward-chained k-fold | More robust evaluation | Slower, complicates threshold tuning |
 
@@ -156,7 +156,7 @@ This is the operational truth: cartel coordination is **brief and coded**, exact
 - Cross-layer SIM matching (already done for L3, partial coverage)
 - Lower-confidence heuristic attribution
 
-This is acknowledged in the methodology as a **deliberate scope limit**. Real intel work also struggles with this — most "dark" burners stay anonymous.
+This is acknowledged in the methodology as a **deliberate scope limit**. Real intel work also struggles with this - most "dark" burners stay anonymous.
 
 ### Q14: Why is attribution confidence so low (~16% mean)?
 
@@ -172,7 +172,7 @@ This is acknowledged in the methodology as a **deliberate scope limit**. Real in
 
 **The choice**: Sheet 1 = Named Suspects (~145 rows). Sheet 2 = Anonymous Burners (~1,648 rows).
 
-**Why split**: The 1,648 burners are real detected operational signals — discarding them loses information. But they have no identity → they cannot appear in the executive "Named Suspects" deliverable. Splitting into two sheets:
+**Why split**: The 1,648 burners are real detected operational signals - discarding them loses information. But they have no identity → they cannot appear in the executive "Named Suspects" deliverable. Splitting into two sheets:
 - Sheet 1 serves command-level decision-making (named targets, prioritized)
 - Sheet 2 supports operational analysts (phone-level tracking, anonymous patterns)
 
@@ -185,7 +185,7 @@ This is acknowledged in the methodology as a **deliberate scope limit**. Real in
 |---|---|---|
 | Per-burner row (no aggregation) | Detailed phone-level view | Same person appears N times, hard to count "how many suspects" |
 | **Per-person row (chosen)** | Clean executive count | Phone-level detail is in joined column |
-| Per-burner per-layer | Most granular | Confusing — same person × layer × burner combinations |
+| Per-burner per-layer | Most granular | Confusing - same person × layer × burner combinations |
 
 **Why per-person**: Executive deliverable answers "who are our targets?", not "which phones are active?". The 145-row count matches operational expectations (small set of high-value targets).
 

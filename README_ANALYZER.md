@@ -1,4 +1,4 @@
-# BorderWatch Analyzer — v10.3
+# BorderWatch Analyzer - v10.3
 
 > **End-to-end intelligence pipeline for multi-layer cartel network analysis.**
 > Reads 6 CSVs from the generator → produces ranked suspects, ML burner detection, and an interactive HTML dashboard.
@@ -11,7 +11,7 @@ The analyzer is a 163-cell Jupyter notebook (`Mexico_Cartel_DataSet_v10_3.ipynb`
 
 1. **Burner-phone detection** across L1-L4 layers using 1:1 contact pattern, recurring-pair confirmation, and Random Forest classification
 2. **Identity attribution** linking each burner phone to its real-name owner via cell-tower co-location
-3. **Network analysis** (SNA) — community detection, centrality, cell-leader identification
+3. **Network analysis** (SNA) - community detection, centrality, cell-leader identification
 4. **Suspect priority ranking** with composite score (0-100) combining 9 evidence signals
 5. **Interactive HTML dashboard** with embedded Folium map, Plotly charts, and Excel export
 6. **Executive Excel report** with 2 sheets: Named Suspects (~145) + Anonymous Burners (~1,648)
@@ -75,11 +75,11 @@ Three primary tests are run on detected burners vs. legit population:
 
 | Test | Method | Typical Result |
 |---|---|---|
-| **A — Night activity** | chi² | Burner 65.16% vs. Legit 12.22% night calls. Cramér's V = 0.379 (medium) |
-| **B — Call duration** | Mann-Whitney U | Burner median 107s vs. Legit 330s. Rank-biserial r ≈ −0.288 (small). Direction: **SHORTER** — coded coordination dominates |
-| **C — SIM-missing** | chi² | Burner 10.13% null vs. Legit 1.24%. OR ≈ 8.96× (Large) |
+| **A - Night activity** | chi² | Burner 65.16% vs. Legit 12.22% night calls. Cramér's V = 0.379 (medium) |
+| **B - Call duration** | Mann-Whitney U | Burner median 107s vs. Legit 330s. Rank-biserial r ≈ −0.288 (small). Direction: **SHORTER** - coded coordination dominates |
+| **C - SIM-missing** | chi² | Burner 10.13% null vs. Legit 1.24%. OR ≈ 8.96× (Large) |
 
-All three tests produce `p < 0.001`. Test B's small effect size is methodologically honest — real-world behavioral signals are rarely "large" in observational data.
+All three tests produce `p < 0.001`. Test B's small effect size is methodologically honest - real-world behavioral signals are rarely "large" in observational data.
 
 ---
 
@@ -87,18 +87,18 @@ All three tests produce `p < 0.001`. Test B's small effect size is methodologica
 
 The HTML dashboard is structured top-to-bottom:
 
-1. 🚨 **Header** — title + 6 metric cards (burners, leakers, follow-ups, SIM-swap, AUC, priority targets)
-2. 📋 **Top 20 Priority Suspects** — evidence breakdown table with score, tier, signal chips
-3. 📥 **Download Full Suspects Report** — Excel button (also floating FAB bottom-right)
-4. 🔍 **Phone Suspicion Lookup** — typeahead search across 2,000 scored phones
-5. 🗺️ **Interactive Intelligence Map** — embedded Folium with 8 active layers
-6. 🎯 **Suspect Priority Ranking** — lollipop chart (sized 11×7 inline)
+1. 🚨 **Header** - title + 6 metric cards (burners, leakers, follow-ups, SIM-swap, AUC, priority targets)
+2. 📋 **Top 20 Priority Suspects** - evidence breakdown table with score, tier, signal chips
+3. 📥 **Download Full Suspects Report** - Excel button (also floating FAB bottom-right)
+4. 🔍 **Phone Suspicion Lookup** - typeahead search across 2,000 scored phones
+5. 🗺️ **Interactive Intelligence Map** - embedded Folium with 8 active layers
+6. 🎯 **Suspect Priority Ranking** - lollipop chart (sized 11×7 inline)
 7. 📊 **Burner Spike per Layer** + 👥 **Burners vs General Population** (side by side)
 8. 📈 **Score Distribution Histogram** + 🏙️ **Confirmed Burners by Cartel Cell**
-9. 🌐 **SNA — Operational Cells** — interactive Plotly network graph
-10. 👔 **Cartel Leadership Hierarchy** — interactive Plotly tree (5 commanders)
-11. 👶 **Young Suspects** — interactive Plotly with adjustable threshold slider
-12. 🛸 **Drone Activations & Night Movements** — 2-panel chart
+9. 🌐 **SNA - Operational Cells** - interactive Plotly network graph
+10. 👔 **Cartel Leadership Hierarchy** - interactive Plotly tree (5 commanders)
+11. 👶 **Young Suspects** - interactive Plotly with adjustable threshold slider
+12. 🛸 **Drone Activations & Night Movements** - 2-panel chart
 13. ⚠️ **Gray-Zone Bridges** + 🚨 **Pre-Border Phone Blackout** (side by side)
 14. 🎯 **Multi-Criteria Suspect Scoring** + 📈 **Forecast: Next High-Risk Cities** (side by side)
 15. 🤖 **ML Hardening Before/After ROC** + 🧬 **SHAP Feature Impact**
@@ -115,7 +115,7 @@ One row per unique person, aggregated across all their burners:
 |---|---|
 | `suspect_name` | Real-name attribution from L1 cell-tower analysis |
 | `attribution_score` | Confidence (0-100), higher = more certain |
-| `layer` | Layers where active (e.g. "L1 — Manufacturers (GSM), L3 — Email") |
+| `layer` | Layers where active (e.g. "L1 - Manufacturers (GSM), L3 - Email") |
 | `email` | If active in L3 |
 | `burner_phone` | All burner phones for this person, `\|`-separated |
 | `legit_phone` | The person's known legitimate phone |
@@ -157,9 +157,9 @@ All available via `pip install` or `conda`.
 
 The notebook produces three named invariant charts that must remain visually consistent:
 
-1. **Sacred Chart #1** — Stage 2 1:1 burner spike per layer (4-panel partner-count histogram with Gamma fit)
-2. **Sacred Chart #2** — Per-cell relationship breakdown (`burner_per_cell.png`, Rule 4 compliance)
-3. **Sacred Chart #3** — Bridge events distribution (uniform 8-22 range, no spike at bin=15)
+1. **Sacred Chart #1** - Stage 2 1:1 burner spike per layer (4-panel partner-count histogram with Gamma fit)
+2. **Sacred Chart #2** - Per-cell relationship breakdown (`burner_per_cell.png`, Rule 4 compliance)
+3. **Sacred Chart #3** - Bridge events distribution (uniform 8-22 range, no spike at bin=15)
 
 These charts are referenced in publication and must not be silently restructured.
 
@@ -171,4 +171,4 @@ The attribution algorithm in Stage 9 uses **L1 cell-tower co-location**: for eac
 
 **Limitation**: Burners that operate only in L2/L3/L4 (no GSM voice activity) cannot be tower-attributed. These become `UNATTRIBUTED` (~74% of all confirmed burners) and appear only in the Excel's Anonymous Burners sheet.
 
-Average attribution confidence: ~16% (algorithm is heuristic, not exact match). For investigation purposes, this is a starting hypothesis — manual verification required.
+Average attribution confidence: ~16% (algorithm is heuristic, not exact match). For investigation purposes, this is a starting hypothesis - manual verification required.

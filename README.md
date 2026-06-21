@@ -1,4 +1,4 @@
-# BorderWatch v10.3 — Mexican Cartel Dataset Story with Intelligence Analysis
+# BorderWatch v10.3 - Mexican Cartel Dataset Story with Intelligence Analysis
 
 > An end-to-end, fully-synthetic **counter-narcotics intelligence pipeline**: a multi-layer
 > data generator that simulates a Mexico–USA border trafficking network, paired with an
@@ -6,7 +6,7 @@
 > an interactive intelligence dashboard.
 
 The project is built for **counter-narcotics training, ML benchmarking, social-network-analysis
-(SNA) research, and investigator scenario training** — all on synthetic data with full ground truth.
+(SNA) research, and investigator scenario training** - all on synthetic data with full ground truth.
 
 ---
 
@@ -15,8 +15,8 @@ The project is built for **counter-narcotics training, ML benchmarking, social-n
 ### Notebooks
 | File | Role |
 |---|---|
-| [`BorderWatch_DataGenerator_v10_3.ipynb`](BorderWatch_DataGenerator_v10_3.ipynb) | **Generator** — produces the 5-layer synthetic dataset + ground truth |
-| [`Mexico_Cartel_DataSet_v10_3.ipynb`](Mexico_Cartel_DataSet_v10_3.ipynb) | **Analyzer** — 163-cell pipeline: detection → attribution → SNA → ML → dashboard |
+| [`BorderWatch_DataGenerator_v10_3.ipynb`](BorderWatch_DataGenerator_v10_3.ipynb) | **Generator** - produces the 5-layer synthetic dataset + ground truth |
+| [`Mexico_Cartel_DataSet_v10_3.ipynb`](Mexico_Cartel_DataSet_v10_3.ipynb) | **Analyzer** - 163-cell pipeline: detection → attribution → SNA → ML → dashboard |
 | [`Mexico_Cartel_DataSet_v10_3_Exercises.ipynb`](Mexico_Cartel_DataSet_v10_3_Exercises.ipynb) | 20 hands-on exercises that rebuild the analyzer core |
 | [`BorderWatch_LinearAlgebra_Exercises.ipynb`](BorderWatch_LinearAlgebra_Exercises.ipynb) | Linear-algebra practice tied to the dataset |
 
@@ -25,11 +25,11 @@ The 5 communication layers, stored as parquet via **Git LFS** (see [Working with
 
 | File | Layer | Real-world analog |
 |---|---|---|
-| `manufacturers_calls.parquet` | L1 — GSM voice calls | Cell-tower CDRs |
-| `supplier_logistics_sms.parquet` | L2 — SMS | Telecom SMS logs |
-| `supplier_procurement_email.parquet` | L3 — Email | Email server logs |
-| `procurement_sales_chat.parquet` | L4 — Chat | Encrypted-app metadata |
-| `waze_smuggler_movements.parquet` | L5 — GPS | GPS pings + drone activations |
+| `manufacturers_calls.parquet` | L1 - GSM voice calls | Cell-tower CDRs |
+| `supplier_logistics_sms.parquet` | L2 - SMS | Telecom SMS logs |
+| `supplier_procurement_email.parquet` | L3 - Email | Email server logs |
+| `procurement_sales_chat.parquet` | L4 - Chat | Encrypted-app metadata |
+| `waze_smuggler_movements.parquet` | L5 - GPS | GPS pings + drone activations |
 
 ### Models & reports
 | File | What |
@@ -44,7 +44,7 @@ The 5 communication layers, stored as parquet via **Git LFS** (see [Working with
 |---|---|
 | [`README_GENERATOR.md`](README_GENERATOR.md) | Generator: layers, sliders, distributions, output sizes |
 | [`README_ANALYZER.md`](README_ANALYZER.md) | Analyzer: 12 pipeline stages, outputs, metrics |
-| [`DATA_LOGIC.md`](DATA_LOGIC.md) | How the simulation works — distributions, linkage, anomalies |
+| [`DATA_LOGIC.md`](DATA_LOGIC.md) | How the simulation works - distributions, linkage, anomalies |
 | [`CELL_BY_CELL.md`](CELL_BY_CELL.md) | Walk-through of every cell in both notebooks |
 | [`QA_TRADEOFFS.md`](QA_TRADEOFFS.md) | Design decisions and trade-offs (20-question Q&A) |
 
@@ -65,20 +65,20 @@ The 5 communication layers, stored as parquet via **Git LFS** (see [Working with
                                         └───────────────────────────┘
 ```
 
-1. **Generate** — the generator hardcodes a cartel hierarchy (12 cells across 5 commanders,
+1. **Generate** - the generator hardcodes a cartel hierarchy (12 cells across 5 commanders,
    ~960 burner pairs) and emits 5 communication layers plus
    `burner_to_owner_ground_truth.csv`, injecting 5 deliberate anomalies (1:1 burners,
    chain leakers, SIM-swaps, pre-border blackouts, night-shifted activity).
-2. **Analyze** — the analyzer reads the layers and runs a 12-stage pipeline: profiling →
+2. **Analyze** - the analyzer reads the layers and runs a 12-stage pipeline: profiling →
    burner detection → cross-layer linkage → SNA → behavioral signals → ML → attribution →
    discovery → mapping → dashboard.
-3. **Deliver** — an interactive HTML dashboard, an interactive map, and a prioritized
+3. **Deliver** - an interactive HTML dashboard, an interactive map, and a prioritized
    Excel suspect list.
 
 ### Headline metrics (typical run)
-- Random Forest **AUC ≈ 0.81** (honest, no label leakage — "Variant C" hardening)
+- Random Forest **AUC ≈ 0.81** (honest, no label leakage - "Variant C" hardening)
 - **Test A (night activity):** burner 65% vs legit 12% night calls, Cramér's V ≈ 0.38
-- **Test B (call duration):** burner median ~107s vs legit ~330s — direction **SHORTER**
+- **Test B (call duration):** burner median ~107s vs legit ~330s - direction **SHORTER**
 - **Test C (SIM-missing):** OR ≈ 9× (burners far more likely to have null SIM)
 - ~145 named suspects + ~1,648 anonymous burners in the Excel report
 
@@ -97,13 +97,13 @@ git lfs install
 ```
 
 ### Run the pipeline
-1. **Generate the data** — open `BorderWatch_DataGenerator_v10_3.ipynb`, optionally adjust the
+1. **Generate the data** - open `BorderWatch_DataGenerator_v10_3.ipynb`, optionally adjust the
    sliders in the first cell, and **Run All**. This writes the 5 layer CSVs + ground truth
    (~3–6 min). See [`README_GENERATOR.md`](README_GENERATOR.md).
-2. **Analyze** — open `Mexico_Cartel_DataSet_v10_3.ipynb` and **Run All** (~10–15 min). The
+2. **Analyze** - open `Mexico_Cartel_DataSet_v10_3.ipynb` and **Run All** (~10–15 min). The
    final cell writes `BorderWatch_Intel_Summary_*.html` and `BorderWatch_Suspects_Full_*.xlsx`.
    See [`README_ANALYZER.md`](README_ANALYZER.md).
-3. **Explore** — open the generated HTML dashboard in any browser.
+3. **Explore** - open the generated HTML dashboard in any browser.
 
 > **Note on data formats:** this repo ships the layers as **parquet** (compact, LFS-tracked).
 > The notebooks reference the generated **CSV** filenames (`manufacturers.csv`, `sms.csv`,
@@ -134,9 +134,9 @@ Without `git lfs pull`, the `*.parquet` files will appear as small (~130-byte) p
 Three charts are referenced in the accompanying methodology and must remain structurally stable
 (visual polish is fine; structural changes must be coordinated):
 
-1. **Sacred Chart #1** — the 1:1 burner spike per layer (partner-count histogram)
-2. **Sacred Chart #2** — per-cell relationship breakdown / Rule 4 compliance
-3. **Sacred Chart #3** — bridge-event distribution (uniform across 8–22, no spike at any bin)
+1. **Sacred Chart #1** - the 1:1 burner spike per layer (partner-count histogram)
+2. **Sacred Chart #2** - per-cell relationship breakdown / Rule 4 compliance
+3. **Sacred Chart #3** - bridge-event distribution (uniform across 8–22, no spike at any bin)
 
 ---
 

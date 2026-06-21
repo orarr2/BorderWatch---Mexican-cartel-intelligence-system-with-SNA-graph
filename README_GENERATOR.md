@@ -1,4 +1,4 @@
-# BorderWatch Data Generator — v10.3
+# BorderWatch Data Generator - v10.3
 
 > **Mexico–USA Border Trafficking Network Simulator**
 > Multi-layer synthetic data generator for counter-narcotics analysis and ML benchmarking.
@@ -17,18 +17,18 @@ Built for: counter-narcotics intelligence training, ML model validation, social 
 
 | File | Layer | Volume | Description |
 |---|---|---|---|
-| `manufacturers.csv` | L1 — GSM voice calls | ~500K rows | Cell-tower-routed voice calls with `caller_phone`, `receiver_phone`, `cell_tower_id`, `call_duration_sec`, `is_outlier_call` |
-| `sms.csv` | L2 — SMS | ~85K rows | Text messages with `sender_phone`, `receiver_phone`, `sms_body_class` |
-| `email.csv` | L3 — Email | ~50K rows | Email logs with `sender_email`, `receiver_email`, `sender_sim_id` (cross-layer key) |
-| `chat.csv` | L4 — Chat | ~70K rows | Encrypted-app handler/associate flows |
-| `waze.csv` | L5 — GPS | ~30K rows | Geolocation pings + drone activations |
+| `manufacturers.csv` | L1 - GSM voice calls | ~500K rows | Cell-tower-routed voice calls with `caller_phone`, `receiver_phone`, `cell_tower_id`, `call_duration_sec`, `is_outlier_call` |
+| `sms.csv` | L2 - SMS | ~85K rows | Text messages with `sender_phone`, `receiver_phone`, `sms_body_class` |
+| `email.csv` | L3 - Email | ~50K rows | Email logs with `sender_email`, `receiver_email`, `sender_sim_id` (cross-layer key) |
+| `chat.csv` | L4 - Chat | ~70K rows | Encrypted-app handler/associate flows |
+| `waze.csv` | L5 - GPS | ~30K rows | Geolocation pings + drone activations |
 | `burner_to_owner_ground_truth.csv` | Ground truth | ~1,926 rows | Maps each burner phone to its true owner: 5 commanders, 15 lieutenants, ~1,118 anonymous |
 
 ---
 
 ## Cartel Structure
 
-- **12 cartel cells** — one per major border crossing: TIJ, JUA, NOG, NLD, REY, MAT, MEX, PIE, AGU, SON, PAL, CUL
+- **12 cartel cells** - one per major border crossing: TIJ, JUA, NOG, NLD, REY, MAT, MEX, PIE, AGU, SON, PAL, CUL
 - **5 commanders** spanning the cells (3+3+2+2+2 cell distribution)
 - **15 lieutenants** (3 per commander, randomly named per run)
 - **~960 burner pairs** total (~80 per cell)
@@ -62,23 +62,23 @@ All sliders are defined as `ipywidgets` in the first generator cell. Adjust befo
 
 Cartel calls follow a **bimodal distribution** (mixture of two operational regimes):
 
-- **70%** of cartel calls are **short coded coordination** — uniform [30, 120] seconds
-- **30%** of cartel calls are **long planning sessions** — uniform [1800, 4000] seconds
+- **70%** of cartel calls are **short coded coordination** - uniform [30, 120] seconds
+- **30%** of cartel calls are **long planning sessions** - uniform [1800, 4000] seconds
 
 This mixture produces:
 - Burner call median ≈ 107 seconds
 - Burner call IQR ≈ [68 sec, 1841 sec]
 
-Legitimate calls follow a lognormal distribution with median ~336 seconds. The key observable signal is that cartel calls are **shorter** than legitimate ones in the median (coded coordination dominates) — matching real-world counter-narcotics literature.
+Legitimate calls follow a lognormal distribution with median ~336 seconds. The key observable signal is that cartel calls are **shorter** than legitimate ones in the median (coded coordination dominates) - matching real-world counter-narcotics literature.
 
 ---
 
 ## Cross-Layer Linkage Rules
 
 1. **L1 → L2**: A cartel burner pair that made N voice calls produces ~`chain_ratio_l1l2 × N` SMS follow-ups between the same pair within 120 seconds.
-2. **L2 → L3**: ~45% of SMS senders also send emails. Email shares the `sender_sim_id` with L1 `caller_sim_id` for the same phone — enables SIM-based cross-layer attribution.
+2. **L2 → L3**: ~45% of SMS senders also send emails. Email shares the `sender_sim_id` with L1 `caller_sim_id` for the same phone - enables SIM-based cross-layer attribution.
 3. **L3 → L4**: Most L4 handlers have parallel email activity.
-4. **L5 — drones**: Drone activations are time-stamped clusters near border-crossing trips. Activation rate is capped per zone (border 0.15, transit 0.06, deep 0.01).
+4. **L5 - drones**: Drone activations are time-stamped clusters near border-crossing trips. Activation rate is capped per zone (border 0.15, transit 0.06, deep 0.01).
 5. **SIM swaps**: 140 phones randomly switch SIMs mid-period, creating attribution challenges.
 
 ---
@@ -100,7 +100,7 @@ The 4 communication CSVs + `waze.csv` are saved to the working directory. The an
 ## How to Run
 
 1. Open `BorderWatch_DataGenerator_v10_3.ipynb` in Jupyter.
-2. (Optional) Adjust sliders in the first cell — defaults produce a balanced dataset.
+2. (Optional) Adjust sliders in the first cell - defaults produce a balanced dataset.
 3. Run all cells (Cell → Run All).
 4. Verify 6 CSVs are created in working directory.
 5. Open `Mexico_Cartel_DataSet_v10_3.ipynb` to analyze.
