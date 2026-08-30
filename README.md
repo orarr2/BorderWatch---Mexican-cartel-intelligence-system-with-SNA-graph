@@ -15,10 +15,7 @@ The project is built for **counter-narcotics training, ML benchmarking, social-n
 ### Notebooks
 | File | Role |
 |---|---|
-| [`BorderWatch_DataGenerator_v10_3.ipynb`](BorderWatch_DataGenerator_v10_3.ipynb) | **Generator** - produces the 5-layer synthetic dataset + ground truth |
 | [`Mexico_Cartel_DataSet_v10_3.ipynb`](Mexico_Cartel_DataSet_v10_3.ipynb) | **Analyzer** - 163-cell pipeline: detection → attribution → SNA → ML → dashboard |
-| [`Mexico_Cartel_DataSet_v10_3_Exercises.ipynb`](Mexico_Cartel_DataSet_v10_3_Exercises.ipynb) | 20 hands-on exercises that rebuild the analyzer core |
-| [`BorderWatch_LinearAlgebra_Exercises.ipynb`](BorderWatch_LinearAlgebra_Exercises.ipynb) | Linear-algebra practice tied to the dataset |
 
 ### Data (Git LFS)
 The 5 communication layers, stored as parquet via **Git LFS** (see [Working with the data](#working-with-the-data)):
@@ -42,11 +39,7 @@ The 5 communication layers, stored as parquet via **Git LFS** (see [Working with
 ### Documentation
 | File | Covers |
 |---|---|
-| [`README_GENERATOR.md`](README_GENERATOR.md) | Generator: layers, sliders, distributions, output sizes |
 | [`README_ANALYZER.md`](README_ANALYZER.md) | Analyzer: 12 pipeline stages, outputs, metrics |
-| [`DATA_LOGIC.md`](DATA_LOGIC.md) | How the simulation works - distributions, linkage, anomalies |
-| [`CELL_BY_CELL.md`](CELL_BY_CELL.md) | Walk-through of every cell in both notebooks |
-| [`QA_TRADEOFFS.md`](QA_TRADEOFFS.md) | Design decisions and trade-offs (20-question Q&A) |
 
 ---
 
@@ -54,21 +47,20 @@ The 5 communication layers, stored as parquet via **Git LFS** (see [Working with
 
 ```
   ┌──────────────────────────┐         ┌───────────────────────────┐
-  │  DataGenerator notebook  │         │     Analyzer notebook     │
-  │                          │  CSVs   │                           │
+  │   Synthetic dataset      │         │     Analyzer notebook     │
+  │      (parquet, LFS)      │  data   │                           │
   │  12 cartel cells         │ ──────► │  Burner detection (1:1)   │
   │  5 commanders            │         │  Cross-layer linkage      │
   │  ~960 burner pairs       │         │  Network analysis (SNA)   │
   │  5 anomaly types         │         │  Random Forest + SHAP     │
-  │  + ground truth          │         │  Identity attribution     │
-  └──────────────────────────┘         │  Dashboard + Excel        │
+  └──────────────────────────┘         │  Identity attribution     │
+                                        │  Dashboard + Excel        │
                                         └───────────────────────────┘
 ```
 
-1. **Generate** - the generator hardcodes a cartel hierarchy (12 cells across 5 commanders,
-   ~960 burner pairs) and emits 5 communication layers plus
-   `burner_to_owner_ground_truth.csv`, injecting 5 deliberate anomalies (1:1 burners,
-   chain leakers, SIM-swaps, pre-border blackouts, night-shifted activity).
+1. **Data** - the dataset encodes a cartel hierarchy (12 cells across 5 commanders,
+   ~960 burner pairs) over 5 communication layers, with 5 deliberate anomalies
+   (1:1 burners, chain leakers, SIM-swaps, pre-border blackouts, night-shifted activity).
 2. **Analyze** - the analyzer reads the layers and runs a 12-stage pipeline: profiling →
    burner detection → cross-layer linkage → SNA → behavioral signals → ML → attribution →
    discovery → mapping → dashboard.
@@ -97,18 +89,17 @@ git lfs install
 ```
 
 ### Run the pipeline
-1. **Generate the data** - open `BorderWatch_DataGenerator_v10_3.ipynb`, optionally adjust the
-   sliders in the first cell, and **Run All**. This writes the 5 layer CSVs + ground truth
-   (~3–6 min). See [`README_GENERATOR.md`](README_GENERATOR.md).
-2. **Analyze** - open `Mexico_Cartel_DataSet_v10_3.ipynb` and **Run All** (~10–15 min). The
+1. **Fetch the data** - clone with Git LFS so the 5 parquet layers download in full
+   (see [Working with the data](#working-with-the-data)).
+2. **Analyze** - open `Mexico_Cartel_DataSet_v10_3.ipynb` and **Run All** (~10-15 min). The
    final cell writes `BorderWatch_Intel_Summary_*.html` and `BorderWatch_Suspects_Full_*.xlsx`.
    See [`README_ANALYZER.md`](README_ANALYZER.md).
 3. **Explore** - open the generated HTML dashboard in any browser.
 
 > **Note on data formats:** this repo ships the layers as **parquet** (compact, LFS-tracked).
-> The notebooks reference the generated **CSV** filenames (`manufacturers.csv`, `sms.csv`,
-> `email.csv`, `chat.csv`, `waze.csv`). Either regenerate the CSVs with the generator, or load
-> the parquet files and save them under the CSV names the analyzer expects.
+> The notebook references **CSV** filenames (`manufacturers.csv`, `sms.csv`,
+> `email.csv`, `chat.csv`, `waze.csv`). Load the parquet files and save them under the
+> CSV names the analyzer expects.
 
 ---
 
